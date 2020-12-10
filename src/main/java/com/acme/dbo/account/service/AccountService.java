@@ -41,4 +41,9 @@ public class AccountService {
         addAll(accounts, accountsFromLegacyAccountingSystem);
         return accounts;
     }
+
+    public Account createAccount(Account account) {
+
+        return new Account();
+    }
 }

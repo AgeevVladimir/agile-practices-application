@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.DisabledIf;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,6 +17,7 @@ import static com.acme.dbo.account.domain.Account.builder;
 import static lombok.AccessLevel.PRIVATE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,4 +46,20 @@ public class AccountApiIT {
                 builder().clientId(2L).amount(200.).build()
         );
     }
+
+    @Test
+    public void shouldGetAccountWhenAccountCreated() throws Exception {
+
+        Account arg = new Account();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(arg);
+        String actual = mockMvc.perform(
+                post("/api/account").header("X-API-VERSION", "1").contentType(MediaType.APPLICATION_JSON).content(json)
+        ).andDo(print()).andExpect(status().is(201))
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(actual).contains(json);
+    }
+
+
 }

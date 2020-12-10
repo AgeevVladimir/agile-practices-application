@@ -19,6 +19,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static lombok.AccessLevel.PRIVATE;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -47,4 +48,13 @@ public class AccountControllerComponentIT {
         assertThat(sut.getAccounts()).containsOnly(accountStub);
         verify(accountServiceMock, times(1)).getAccounts();
     }
+
+    @Test
+    public void shouldCreateAccount() {
+        given(accountServiceMock.createAccount(any())).willReturn(accountStub);
+
+        assertThat(sut.getAccounts()).containsOnly(accountStub);
+        verify(accountServiceMock, times(1)).createAccount(any());
+    }
+
 }
