@@ -1,19 +1,13 @@
 package com.acme.dbo.account.controller;
 
-import com.acme.dbo.account.dao.AccountRepository;
 import com.acme.dbo.account.domain.Account;
 import com.acme.dbo.account.service.AccountService;
-import com.acme.dbo.client.domain.Client;
-import io.micrometer.core.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import liquibase.pro.packaged.A;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
