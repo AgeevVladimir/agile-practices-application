@@ -51,6 +51,12 @@ public class AccountApiIT {
     public void shouldGetAccountWhenAccountCreated() throws Exception {
 
         Account arg = new Account();
+        arg.setAmount(100.0);
+        arg.setClientId(1L);
+
+        Account expected = new Account();
+
+
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(arg);
         String actual = mockMvc.perform(
@@ -58,7 +64,7 @@ public class AccountApiIT {
         ).andDo(print()).andExpect(status().is(201))
                 .andReturn().getResponse().getContentAsString();
 
-        assertThat(actual).contains(json);
+        assertThat(actual).contains(objectMapper.writeValueAsString(expected));
     }
 
 
