@@ -2,6 +2,8 @@ package com.acme.dbo.it.account;
 
 import com.acme.dbo.account.domain.Account;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.DisabledIf;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.Instant;
 
 import static com.acme.dbo.account.domain.Account.builder;
 import static lombok.AccessLevel.PRIVATE;
@@ -49,22 +53,22 @@ public class AccountApiIT {
 
     @Test
     public void shouldGetAccountWhenAccountCreated() throws Exception {
-
-        Account arg = new Account();
-        arg.setAmount(100.0);
-        arg.setClientId(1L);
-
-        Account expected = new Account();
-
-
+        Account argument = new Account(null, 100.0, Instant.now(), 1L);
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(arg);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        String jsonArgument = objectMapper.writeValueAsString(argument);
+
         String actual = mockMvc.perform(
-                post("/api/account").header("X-API-VERSION", "1").contentType(MediaType.APPLICATION_JSON).content(json)
+                post("/api/account").header("X-API-VERSION", "1")
+                        .contentType(MediaType.APPLICATION_JSON).content(jsonArgument)
         ).andDo(print()).andExpect(status().is(201))
                 .andReturn().getResponse().getContentAsString();
 
-        assertThat(actual).contains(objectMapper.writeValueAsString(expected));
+        Account actualObject = objectMapper.readValue(actual, Account.class);
+        assertThat(actualObject.getId()).isNotNull();
+        assertThat(actualObject.getAmount()).isEqualTo(argument.getAmount());
+        assertThat(actualObject.getClientId()).isEqualTo(argument.getClientId());
     }
 
 
