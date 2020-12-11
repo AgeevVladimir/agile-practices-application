@@ -71,5 +71,9 @@ public class AccountApiIT {
         assertThat(actualObject.getClientId()).isEqualTo(argument.getClientId());
     }
 
+    @Test
+    public void shouldReturnErrorWhenClientNotFound() throws Exception {
+
+    }
 
 }
