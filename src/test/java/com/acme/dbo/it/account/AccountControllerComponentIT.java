@@ -53,7 +53,7 @@ public class AccountControllerComponentIT {
     public void shouldCreateAccount() {
         given(accountServiceMock.createAccount(any())).willReturn(accountStub);
 
-        assertThat(sut.getAccounts()).containsOnly(accountStub);
+        assertThat(sut.createAccount(new Account())).isEqualTo(accountStub);
         verify(accountServiceMock, times(1)).createAccount(any());
     }
 

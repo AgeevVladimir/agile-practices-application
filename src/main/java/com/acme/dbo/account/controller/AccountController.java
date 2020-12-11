@@ -38,15 +38,6 @@ public class AccountController {
  //   @ResponseStatus(HttpStatus.CREATED)
     public Account createAccount(@RequestBody @Valid final Account account) {
 
-//        try {
-//            Account accountCreated = accounts.saveAndFlush(account);
-//            log.info("Account created #{}", accountCreated.getId());
-//            return accountCreated;
-//        } catch (Exception e) {
-//            log.error("Account creation error for client data: " + account, e);
-//            throw e;
-//        }
-
         return accountService.createAccount(account);
     }
 }

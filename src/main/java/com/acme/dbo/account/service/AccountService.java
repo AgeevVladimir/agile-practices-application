@@ -44,6 +44,18 @@ public class AccountService {
 
     public Account createAccount(Account account) {
 
-        return new Account();
+        Account accountCreated;
+
+        try {
+            accountCreated = accountRepository.saveAndFlush(account);
+            log.info("Account created #{}", accountCreated.getId());
+
+        } catch (Exception e) {
+            log.error("Account creation error for client data: " + account, e);
+            throw e;
+        }
+
+        return accountCreated;
+
     }
 }
