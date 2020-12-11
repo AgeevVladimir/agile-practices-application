@@ -3,11 +3,13 @@ package com.acme.dbo.account.controller;
 import com.acme.dbo.account.domain.Account;
 import com.acme.dbo.account.service.AccountService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,12 +34,11 @@ public class AccountController {
         return accountService.getAccounts();
     }
 
- //   @ApiOperation(value = "AccCreation", notes = "Created new account", response = Account.class)
- //   @ApiResponse(code = 201, message = "Account created", response = Account.class)
+    @ApiOperation(value = "AccCreation", notes = "Created new account", response = Account.class)
+    @ApiResponse(code = 201, message = "Account created", response = Account.class)
     @PostMapping
- //   @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)
     public Account createAccount(@RequestBody @Valid final Account account) {
-
         return accountService.createAccount(account);
     }
 }
